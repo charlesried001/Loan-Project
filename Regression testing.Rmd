@@ -1,0 +1,68 @@
+---
+title: "test 1"
+author: "Charles Reid"
+date: "5/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r include=FALSE}
+# read in libraries 
+library(tidyverse) # general dataframe manipulation
+library(MASS) # statistical package
+library(rms) # regression modeling package
+library(prettydoc)
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(ggrepel)
+library(tidyverse)
+library(stargazer)
+library(kableExtra)
+library(flexdashboard)
+library(DataExplorer)
+```
+
+```{r include=FALSE}
+accepted_loans <- read_csv("LoanData.csv")
+```
+
+## Regression
+
+Lending Club provides personal loan, business loan, auto refinancing and patient solutions with APR ranging from 4.99%-35.89% given the differences of the borrowers’ characteristics. The loan amount is between 1,000 dollars to 500,000 dollars with a payment term of 1-5 years. Lending Club uses an intermediate pricing model (Galloway, 2009) which means the interest rate is predetermined by the platform.
+
+
+```{r}
+requested_balance_vs_granted_balance <- lm(funded_amnt ~ loan_amnt, data = accepted_loans)
+stargazer(requested_balance_vs_granted_balance, type = "text")
+```
+
+```{r}
+general_factors_affecting_approved_balance <- lm(funded_amnt ~ annual_inc + emp_length + home_ownership + purpose + delinq_2yrs + term + int_rate + grade, data = accepted_loans)
+
+stargazer(general_factors_affecting_approved_balance, type = "text")
+```
+```{r}
+employment_factors_affecting_balance <- lm(funded_amnt ~ annual_inc + emp_length + home_ownership + purpose + delinq_2yrs + term + int_rate + grade, data = accepted_loans)
+
+stargazer(employment_factors_affecting_balance, type = "text")
+```
+
+```{r}
+factors_affecting_interest_rate <- lm(int_rate ~ fico_range_low	+ fico_range_high + inq_last_6mths + open_acc + pub_rec + revol_bal	+ revol_util + total_acc	+ collections_12_mths_ex_med + inq_fi + avg_cur_bal, data = accepted_loans)
+
+stargazer(factors_affecting_interest_rate, type = "text")
+```
+
+```{r}
+#factors_affecting_hardships <- lm(hardship_flag ~ revol_bal + revol_util + total_acc + total_rec_late_fee + collections_12_mths_ex_med + max_bal_bc + inq_fi + tax_liens + fico_range_low + fico_range_high + delinq_amnt + delinq_2yrs + dti, data + pymnt_plan,family = binomial(link = "logit") ,data = accepted_loans)
+
+#stargazer(factors_affecting_hardships, type = "text")
+```
+
+

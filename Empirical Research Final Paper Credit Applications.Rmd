@@ -1,0 +1,260 @@
+---
+title: "Empirical Research Final Paper - Peer to Peer Lending"
+author: "Meirou Guan | Charles Reid"
+date: "5/10/2021"
+output:
+  html_document:
+    toc: yes
+    df_print: paged
+  pdf_document:
+    toc: yes
+    df_print: kable
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+rm(list=ls())
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=12, fig.height=7,fig.align = "center") 
+```
+
+```{r include=FALSE}
+# read in libraries 
+library(tidyverse) # general dataframe manipulation
+library(MASS) # statistical package
+library(rms) # regression modeling package
+library(prettydoc)
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+library(data.table)
+library(ggrepel)
+library(tidyverse)
+library(stargazer)
+library(kableExtra)
+library(flexdashboard)
+library(DataExplorer)
+```
+
+```{r include=FALSE}
+accepted_loans <- read_csv("LoanData.csv")
+```
+
+<center> <h2> Preface </h2> <center>
+
+  LendingClub headquarters in San Francisco, California, which is the first peer-to-peer lender to register its offerings as securities with the SEC. As a leader in this industry, LendingClub has issued $41 Billion in loans by September 2018. In 2020, LendingClub has made many critical decisions. First, they halt the business loan service but partner with Opportunity Fund, which means borrowers can still apply for the business loan via this platform but provided by different company. Second, they made an acquisition of Radius bank in the same year of October, meanwhile slow down the P2P individual lending due to the pandemic. Although, in December, the P2P lending service comes to an end, the large amount of transaction data it leaves still has great value on the analysis of this field.
+
+  The empirical analysis of this papers will focus on data from LendingClub since it is nowadays the world’s largest P2P lending platform. Using this database as a case study to develop a qualified borrower portrait can contribute to understanding risk assessment in loaning service and minimum financial loss by lending to wrong borrowers.
+
+# Literature Review
+
+## Introduction
+
+  With the development of internet, peer to peer (P2P) lending networking brings more possibilities to the current loan system and has greatly facilitated the funding process for microfinances, low-income enterprises or individual with unsecured loans all over the world (Galloway, 2009). Instead of funding through banks or third-party agencies, some P2P lending platforms create a direct dynamic via an auction mechanism (Ashat & Assadi, 2009) between borrowers and lenders where both parties can favorably match their expectation to a right counterparty at the best rate. This is a sharp contrast to traditional funding via banks. 
+
+The earliest P2P lending platform is Zopa.com which is established in the UK in March 2005. By 2008, Zopa.com has successfully entered into the markets of Italy, US and Japan (Everett, 2015). In the same year, Kiva.org, an American non-profit P2P Lending was established to serve the microenterprises in developing countries (Galloway, 2009). MicroPlace is another global funding platform that has a similar market segment and a mission statement as Kiva.com; the only difference is that investors in MicroPlace are able to get a financial return as it is a registered brokerage-dealer in the US. Driven by the huge unsecured demand globally, this crowdfunding model (Mach, 2014) has been successful worldwide. Key players in European market (Everett,2015) include MyC4 (Denmark), Smava.de (Germany), Boober.it (Italy), and Loanland (Sweden). In the US, 6 competitors including Prosper, Peerform, funding Circle, Street Share, Kiva and Lending club are now actively funding for small business and individuals in the society (Proctor, 2020). 
+
+## Business Model
+
+  This section will compare the differences between the business models of some P2P Lending platforms; Prosper and Lending Club. According to Proctor (2020), Prosper offers loans ranging from $2,000 to 300,000 with payment term of 3-5 years. The cost consists of interest rates ranging from 7.95% to 35.99% and a small origination fee. Prosper adopts a double-blind1 auction mechanism (Everett, 2009) in which both investors and borrowers can maximize their welfare. For example, borrowers would post “listings” which specify the amount, purposes of loan, maturity, highest interest rate they are willing to pay and optional soft personal information (Morse, 2015). Then the loan will be funded and bided upon by multiple investors until the auction closes. In this way, the crowdfunding ends with the most favorable interest rate for the borrowers.
+  
+Lending Club provides personal loan, business loan, auto refinancing and patient solutions with APR ranging from 4.99 %-35.89 % given the differences of the borrowers’ characteristics. The loan amount is between 1,000 dollars to 500,000 dollars with a payment term of 1-5 years. Lending Club uses an intermediate pricing model (Galloway, 2009) which means the interest rate is predetermined by the platform. 
+
+Lending Club provides personal loan, business loan, auto refinancing and patient solutions with APR ranging from 4.99%-35.89% given the differences of the borrowers’ characteristics. The loan amount is between 1,000 dollars to 500,000 dollars with a payment term of 1-5 years. Lending Club uses an intermediate pricing model (Galloway, 2009) which means the interest rate is predetermined by the platform.
+
+The profit of P2P platforms mainly come from the origination fee, which is usually 1%-6% of the amount taken out from investors after the loan is fully funded. Lending Club also charges delinquency fees from borrowers and collection fees from investors (Morse, 2015). So, APR is the index that measures the total borrowing cost. 
+
+## Risks Assessment and Monitoring for P2P Lending
+
+Online private loans for individual and small businesses are considered to be risker. First, information asymmetry (Bachmann et al., 2011) has been a “headache” in a trust-based funding system to assess risk. Borrowers and lenders are facing a dilemma since borrowers try to hide their adverse information and lenders would like to obtain borrower’s full financial status to access the risk (Mach et al, 2014). Under an unsecured loan, private investors are exposed to larger default risk and principal losses due to underwriting and serving challenges (Galloway, 2009). They might fail to screen the negative information on the borrower ‘listings’ (Morse, 2015); when default or fraud occur, they have difficulties to acquire help from the lending mechanism. Thus, it is necessary for investors to be familiar with the funding process and risk precaution in the first place. 
+In the following part of the essay, we will discuss how investors perceive the creditworthiness and credibility of investors when selecting investment profiles in the pool. By researching the literature reviews, we summarize some characteristics of those who are successfully funded including social connection, financial characteristics, personal soft information and the profile description manners. 
+Firstly, analyzing trust portrait helps to offset the downside effect of information asymmetry. Ashat and Assadi (2009) identify three dimensions including personality of trustor, trustee and third party as sources of trust. This finding is coherent with the investment group features founded by Everett (2010).
+
+## Lenders
+
+
+## Borrowers
+
+ What factors are the determinants related to being funded successfully? We first consider the financial characteristics of borrowers as the most important determinant intuitively.  Like traditional lending from banks or the third institutions, online lending verifies borrowers’ qualification based on their credit scores, for example, the scoring system of Lending Club is divided into 7 levels from A~G. Borrowers’ creditworthiness is validated by an external agency (Bachmann el at, 2011) mainly relying on financial characteristics. Klafft (2008) finds that credit rating has the most significant impact on interest rate while a verified bank account or a home ownership doesn’t show a statistical significance in the test. Herzenstein, Sonenshein and Dholakia (2011) find that an economic hardship identity results in a 0.009 point lower in default. 
+ 
+The second factor discussed here is soft personal information. Demographics, economic condition, age, gender, race and occupation are referred here (Morse, 2015; Bachmann et al, 2011) but there are mixed findings on these matters. Demographical factors have little impact on success of being funded (Pope & Sydnor, 2010) while sharing a similar background on race, gender or living community increase the chance to get a loan or deduce interest rate (Ravina, 2007). Agrawal, Catalini and Golafarb (2011) further demonstrate the relation between distance and the willingness of whether investor would take the loan. Their empirical result shows an average diffusion distance of 3000 miles within the same region. 
+
+## Borrower Profile 
+
+  The manner in which borrowers disclose their information affect investors’ first perception in profile selections. For the online P2P funding process, investors rarely have the opportunity to meet borrowers physically. As a result, the borrower profiles posted on the platforms serve as the first window to mine and screen valuable information and assist decision making. 
+
+Given the problems of information asymmetry, verification of soft information and underwriting and serving challenges mentioned above, we summarize some methodologies and finding regarding borrower profile narrative. Herzenstein, Sonenshein and Dholakia (2011) identify trustworthy and successful identity claim stand out among the six identity claims (Miles and Huberman, 1997) when reading the application narrative. To give more insights for investing profile selections, we should carefully decide the criteria and definitions of these two dimensions, but in this paper, we will not discuss this topic detailly. 
+
+  Massive textual analysis and techniques are used to sketch the portrait of qualified borrowers. Mitra and Gilbert (2014) generate a “winning list” of phrases and words in the funding bids, which indicate the preferences and biases of investor. Gao and Lin (2013) empirically test the relationship between the linguistic choices and default rate. Their findings demonstrate that higher complexity of the narrative indicate a 3.6 percentage higher default rate, holding other factors constant. Michel (2012) evaluates the narrative in nine dimensions: purpose of the loan, income, income source, education, other debt, interest rate on other debt, an explanation for poor credit grade, expenses, and picture (Morse, 2015).  He highlights the importance of the completeness of the information disclosure, among which purpose of the loan, other debt and explanation of poor credit grade are the most persuasive. 
+
+
+
+# Exploratory Data Analysis 
+
+  The main data source for this thesis is All Lending Club data from Kaggle covered from 2007 to 2018. The original Kaggle base contains 74 variables in total. We select 38 variables with 2260701 observations that are most related. We select interest rates, payment term, loan amount, installment, loan purpose, loan status (fully paid, current and charged off) and application type (individual or joint application with two individuals) when describing and monitoring a loan profile. Here we define charged off as bad loan. Financial characteristics is one of the most important determinants in interest rate determination and a successful biding behavior. This is reflected in the assigned loan grade from A~G and financial document verification. We categorize soft personal information as follows: occupation, annual income and home ownership. 
+  
+  This database offers a multi-dimension to analyze successful bidding behaviors and quantitative loan performance. However, we didn’t include rejected loan, which limits us to further identified what cause creditworthiness suspiciousness. The database we use doesn’t contain much the narrative variables, thus, our experiment design will not focus much on textual analysis. 
+
+
+
+
+
+
+
+
+```{r echo=FALSE}
+
+text_tbl <- data.frame(
+                         Variable = c("loan_amnt",
+                                      "funded_amnt",
+                                      "disbursement_method",
+                                      "term",
+                                      "int_rate",
+                                      "installment",
+                                      "grade",
+                                      "emp_title",
+                                      "emp_length",
+                                      "home_ownership",
+                                      "annual_inc",
+                                      "annual_inc_joint",
+                                      "loan_status",
+                                      "pymnt_plan",
+                                      "purpose",
+                                      "title",
+                                      "addr_state",
+                                      "dti",
+                                      "dti_joint",
+                                      "delinq_2yrs",
+                                      "delinq_amnt",
+                                      "fico_range_low",
+                                      "fico_range_high",
+                                      "inq_last_6mths",
+                                      "open_acc",
+                                      "pub_rec",
+                                      "revol_bal",
+                                      "revol_util",
+                                      "total_acc",
+                                      "total_rev_hi_lim",
+                                      "total_rec_late_fee",
+                                      "collections_12_mths_ex_med",
+                                      "application_type",
+                                      "max_bal_bc",
+                                      "inq_fi",
+                                      "avg_cur_bal",
+                                      "tax_liens",
+                                      "hardship_flag"),
+  
+  Description = c(
+"The listed amount of the loan applied for by the borrower. If at some point in time, the credit department reduces the loan amount, then it will be reflected in this value.",
+"The total amount committed to that loan at that point in time.",
+"The method by which the borrower receives their loan. Possible values are: CASH, DIRECT_PAY.",
+"The number of payments on the loan. Values are in months and can be either 36 or 60.",
+"Interest Rate on the loan",
+"The monthly payment owed by the borrower if the loan originates.Interest Rate on the loan",
+"Lending Club assigned loan graded.",
+"The job title supplied by the Borrower when applying for the loan.",
+"Employment length in years. Possible values are between 0 and 10 where 0 means less than one year and 10 means ten or more years.",
+"The home ownership status provided by the borrower during registration or obtained from the credit report. Our values are: RENT, OWN, MORTGAGE, OTHER",
+"The self-reported annual income provided by the borrower during registration.",
+"The self-reported joint annual income provided by the borrower during registration.",
+"Current status of the loan",
+"Indicates if a payment plan has been put in place for the loan",
+"A category provided by the borrower for the loan request.",
+"The loan title provided by the borrower",
+"The state provided by the borrower in the loan application",
+"A ratio calculated using the borrower’s total monthly debt payments on the total debt obligations, excluding mortgage and the requested LC loan, divided by the borrower’s self-reported monthly income.",
+"Joint debt to income ratio.",
+"The number of 30+ days past-due incidences of delinquency in the borrower's credit file for the past 2 years.",
+"The past-due amount owed for the accounts on which the borrower is now delinquent.",
+"The lower boundary range the borrower’s FICO at loan origination belongs to.",
+"The upper boundary range the borrower’s FICO at loan origination belongs to.",
+"The number of inquiries in past 6 months (excluding auto and mortgage inquiries).",
+"The number of open credit lines in the borrower's credit file.",
+"Number of derogatory public records.",
+"Total credit revolving balance.",
+"Revolving line utilization rate, or the amount of credit the borrower is using relative to all available revolving credit.",
+"The total number of credit lines currently in the borrower’s credit file.",
+"Total revolving high credit/credit limit.",
+"Late fees received to date.",
+"Number of collections in 12 months excluding medical collections.",
+"Indicates whether the loan is an individual application or a joint application with two co-borrowers.",
+"Maximum current balance owed on all revolving accounts.",
+"Number of personal finance inquiries.",
+"Average current balance of all accounts.",
+"Number of tax liens.",
+"Flags whether or not the borrower is on a hardship plan."
+  )
+)
+
+kbl(text_tbl) %>%
+  kable_paper(full_width = F) %>%
+  column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2, width = "30em", background = "white")
+```
+
+```{r echo=FALSE}
+head(accepted_loans)
+```
+
+```{r echo=FALSE}
+plot_missing(accepted_loans)
+plot_intro(accepted_loans)
+plot_density(accepted_loans)
+plot_histogram(accepted_loans)
+```
+```{r}
+ggplot(accepted_loans, aes(grade, fill=grade)) +
+    geom_bar(stat="count", color="white", size=0.25)
+```
+
+
+
+# Methodology
+
+```{r include=FALSE}
+accepted_loans <- read_csv("LoanData.csv")
+```
+
+```{r}
+factors_affecting_approved_balance_1 <- lm(loan_amnt ~ funded_amnt, data = accepted_loans)
+```
+
+```{r}
+stargazer(factors_affecting_approved_balance_1, type = "text")
+```
+
+
+# Conclusions
+
+# References
+
+*  Agrawal, A., Catalini, C., & Goldfarb, A. (2010). The Geography of Crowdfunding. SSRN Electronic Journal. Published. https://doi.org/10.2139/ssrn.1692661
+
+*  Ashta, A., & Assadi, D. (2009). An Analysis of European Online micro-lending Websites. He EMN 6th Annual Conference, 4–5 June 2009, 33(1768–3394), 4–28. https://www.researchgate.net/publication/228321506_An_Analysis_of_European_Online_Micro-Lending_Websites
+
+*  Bachmann, A., Becker, A., Buerckner, D., Hilker, M., Kock, F., Lehmann, M., & Tiburtius, P. (2011). Online Peer-to-Peer Lending – A Literature Review. Journal of Internet Banking and Commerce, 16(2). https://www.researchgate.net/publication/288764128_Online_Peer-to-Peer_Lending_-_A_Literature_Review
+
+*  Everett, C. R. (2008). Group Membership, Relationship Banking and Loan Default Risk: The Case of Online Social Lending. Banking and Finance Review, 7(2). https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1114428
+
+*  Freedman, S., & Jin, G. Z. (2008). Do Social Networks Solve Information Problems for Peer-to-Peer Lending? Evidence from Prosper.com. SSRN Electronic Journal. Published. https://doi.org/10.2139/ssrn.1936057
+
+*  Galloway, I. J. (2009). Peer-to-Peer Lending and Community Development Finance. Federal Reserve Bank of San Francisco. Published. https://ideas.repec.org/p/fip/fedfcw/2009-06.html
+
+*  Gao, Q., & Lin, M. (2013). Linguistic Features and Peer-to-Peer Loan Quality: A Machine Learning Approach. SSRN Electronic Journal. Published. https://doi.org/10.2139/ssrn.2446114
+
+*  Herzenstein, M., Dholakia, U. M., & Andrews, R. (2010). Strategic Herding Behavior in Peer-to-Peer Loan Auctions. SSRN Electronic Journal. Published. https://doi.org/10.2139/ssrn.1596899
+
+*  Klafft, M. (2008). Peer to Peer Lending: Auctioning Microcredits over the Internet. He International Conference on Information Systems, Technology and Management, A. Agarwal, R. Khurana, Eds., IMT, Dubai. Published. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1352383
+
+*  Mach, T., Carter, C., & Slattery, C. R. (2014). Peer-to-Peer Lending to Small Businesses. SSRN Electronic Journal. Published. https://doi.org/10.2139/ssrn.2390886
+
+*  Morse, A. (2015). Peer-to-Peer Crowdfunding: Information and the Potential for Disruption in Consumer Lending. SSRN Electronic Journal. Published. https://doi.org/10.2139/ssrn.2551272
+
+*  Nahapiet, J., & Ghoshal, S. (1998). Social Capital, Intellectual Capital, and the Organizational Advantage. Academy of Management Review, 23(2), 242–266. https://doi.org/10.5465/amr.1998.533225
+
+*  Pope, D. G., & Sydnor, J. R. (2010). What’s in a Picture? Journal of Human Resources, 46(1), 53–92. https://doi.org/10.3368/jhr.46.1.53
+
+*  Ravina, E. (2007). Beauty, Personal Characteristics, and Trust in Credit Markets. SSRN Electronic Journal. Published. https://doi.org/10.2139/ssrn.972801
+
+*  Tanushree, M., & Eric, G. (2014). The language that gets people to give: Phrases that predict success on kickstarter. The 17th ACM Conference on Computer Supported Cooperative Work & Social Computing. Published. https://doi.org/10.1145/2531602.2531656
+
